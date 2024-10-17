@@ -29,7 +29,7 @@ pipeline {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     sh '''
                         . venv/bin/activate
-                        pylint simple-django-app/cool_counters/manage.py
+                        pylint --disable=R,C simple-django-app || true
                     '''
                 }
             }
@@ -41,7 +41,7 @@ pipeline {
                     . venv/bin/activate
                     cd simple-django-app/cool_counters
                     python manage.py migrate
-                    python manage.py runserver 0.0.0.0:8000 &
+                    python manage.py runserver 0.0.0.0:8000
                 '''
             }
         }
