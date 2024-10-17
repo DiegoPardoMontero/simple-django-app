@@ -2,22 +2,37 @@ pipeline {
     agent any
 
     stages {
-        stage('Dependencies'){
+        stage('Setup Python Environment') {
             steps {
-                sh 'pip install pylint'
+                // Crear el entorno virtual en una carpeta específica
+                sh '''
+                    python3 -m venv venv
+                    source venv/bin/activate
+                    pip install --upgrade pip
+                    pip install pylint django
+                '''
             }
         }
+
         stage('Lint') {
             steps {
-                sh 'pylint --disable=R,C simple-django-app/cool_counters/*.py'
+                // Activar el entorno virtual y ejecutar Pylint
+                sh '''
+                    source venv/bin/activate
+                    pylint --disable=R,C simple-django-app/cool_counters/*.py
+                '''
             }
         }
+
         stage('Deploy') {
             steps {
-                sh 'python manage.py migrate'
-                sh 'python manage.py runserver 0.0.0.0:8000'
+                // Activar el entorno virtual, aplicar migraciones y correr el servidor Django
+                sh '''
+                    source venv/bin/activate
+                    python manage.py migrate
+                    python manage.py runserver 0.0.0.0:8000
+                '''
             }
         }
     }
 }
-
