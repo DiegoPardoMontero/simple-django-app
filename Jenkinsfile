@@ -7,7 +7,7 @@ pipeline {
                 // Crear el entorno virtual en una carpeta específica
                 sh '''
                     python3 -m venv venv
-                    source venv/bin/activate
+                    . venv/bin/activate
                     pip install --upgrade pip
                     pip install pylint django
                 '''
@@ -16,9 +16,9 @@ pipeline {
 
         stage('Lint') {
             steps {
-                // Activar el entorno virtual y ejecutar Pylint
+                // Ejecutar Pylint dentro del entorno virtual
                 sh '''
-                    source venv/bin/activate
+                    . venv/bin/activate
                     pylint --disable=R,C simple-django-app/cool_counters/*.py
                 '''
             }
@@ -26,9 +26,9 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                // Activar el entorno virtual, aplicar migraciones y correr el servidor Django
+                // Aplicar migraciones y levantar el servidor dentro del entorno virtual
                 sh '''
-                    source venv/bin/activate
+                    . venv/bin/activate
                     python manage.py migrate
                     python manage.py runserver 0.0.0.0:8000
                 '''
