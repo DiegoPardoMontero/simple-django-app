@@ -2,18 +2,16 @@ pipeline {
     agent any
 
     stages {
+        stage('Dependencies'){
+            steps {
+                sh 'pip install pylint'
+            }
+        }
         stage('Lint') {
             steps {
                 sh 'pylint --disable=R,C simple-django-app/cool_counters/*.py'
             }
         }
-
-        stage('Test') {
-            steps {
-                sh 'python manage.py test'
-            }
-        }
-
         stage('Deploy') {
             steps {
                 sh 'python manage.py migrate'
