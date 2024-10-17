@@ -19,7 +19,7 @@ pipeline {
                 // Ejecutar Pylint dentro del entorno virtual
                 sh '''
                     . venv/bin/activate
-                    pylint --disable=R,C simple-django-app/cool_counters/*.py
+                    pylint simple_django_app
                 '''
             }
         }
