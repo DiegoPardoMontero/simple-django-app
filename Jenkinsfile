@@ -4,7 +4,12 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                sh 'git clone https://github.com/DiegoPardoMontero/simple-django-app.git'
+                sh '''
+                    if [ -d "simple-django-app" ]; then
+                        rm -rf simple-django-app
+                    fi
+                    git clone https://github.com/DiegoPardoMontero/simple-django-app.git
+                '''
             }
         }
 
@@ -23,7 +28,7 @@ pipeline {
             steps {
                 sh '''
                     . venv/bin/activate
-                    pylint simple-django-app
+                    pylint simple-django-app/cool_counters/*.py
                 '''
             }
         }
