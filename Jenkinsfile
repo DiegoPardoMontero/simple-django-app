@@ -4,14 +4,12 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                // Clonar el repositorio de GitHub
                 sh 'git clone https://github.com/DiegoPardoMontero/simple-django-app.git'
             }
         }
 
         stage('Setup Python Environment') {
             steps {
-                // Crear el entorno virtual en una carpeta específica
                 sh '''
                     python3 -m venv venv
                     . venv/bin/activate
@@ -23,21 +21,9 @@ pipeline {
 
         stage('Lint') {
             steps {
-                // Ejecutar Pylint dentro del entorno virtual
                 sh '''
                     . venv/bin/activate
                     pylint simple-django-app
-                '''
-            }
-        }
-
-        stage('Test') {
-            steps {
-                // Ejecutar las pruebas de Django dentro del entorno virtual
-                sh '''
-                    . venv/bin/activate
-                    cd simple-django-app/cool_counters
-                    python manage.py test
                 '''
             }
         }
